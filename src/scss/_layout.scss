@@ -4,3 +4,6 @@
   will-change: auto;
   @include transition(padding 0.15s);
 }
+.page-item {
+  cursor: pointer;
+}

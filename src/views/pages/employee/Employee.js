@@ -30,6 +30,13 @@ const Employee = () => {
   const [isEdit, setIsEdit] = useState(false)
   const [page, setPage] = useState(1)
 
+  const handleClickPrevious = () => {
+    if (page <= 1) {
+      return
+    }
+    setPage(page - 1)
+  }
+
   return (
     <div className="employee">
       <CRow className="d-flex justify-content-between p-2">
@@ -91,7 +98,7 @@ const Employee = () => {
         </CTableBody>
       </CTable>
       <CPagination align="center" aria-label="Page navigation example">
-        <CPaginationItem onClick={() => setPage(page - 1)}>
+        <CPaginationItem onClick={handleClickPrevious}>
           {' '}
           <span aria-hidden="true">&laquo;</span>
         </CPaginationItem>
