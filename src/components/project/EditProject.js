@@ -120,7 +120,7 @@ const EditProject = () => {
         <CRow className="mt-2">
           <CCol className="d-flex justify-content-end">
             <CButton color="secondary" onClick={() => navigate('/project')}>
-              Close
+              Back
             </CButton>
             <CButton color="primary" className="ms-1" type="submit">
               Update

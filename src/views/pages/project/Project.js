@@ -24,6 +24,7 @@ import CreateProject from 'src/components/project/CreateProject'
 import EditProject from 'src/components/project/EditProject'
 import api from 'src/api/apiClient'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Project = () => {
   const [isDelete, setIsDelete] = useState(false)
@@ -56,6 +57,19 @@ const Project = () => {
     }
     searchData()
   }, [search])
+
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/api/project/${id}`)
+      toast.success('Delete Project Successfully!', {
+        position: 'top-right',
+      })
+
+      fetchData()
+    } catch (error) {
+      return Promise.reject(error)
+    }
+  }
 
   return (
     <div className="employee">
@@ -119,7 +133,7 @@ const Project = () => {
                       <CIcon icon={cilColorBorder} />
                     </CButton>
 
-                    <CButton variant="ghost" onClick={() => setIsDelete(!isDelete)}>
+                    <CButton variant="ghost" onClick={() => handleDelete(project.is)}>
                       <CIcon icon={cilDelete} />
                     </CButton>
                   </CTableDataCell>
@@ -139,7 +153,7 @@ const Project = () => {
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
       </CPagination>
-      <CModal visible={isDelete} onClose={() => setIsDelete(false)}>
+      {/* <CModal visible={isDelete} onClose={() => setIsDelete(false)}>
         <CModalHeader onClose={() => setIsDelete(false)}>
           <CModalTitle>Delete Project</CModalTitle>
         </CModalHeader>
@@ -150,8 +164,9 @@ const Project = () => {
           </CButton>
           <CButton color="primary">Delete</CButton>
         </CModalFooter>
-      </CModal>
+      </CModal> */}
       <CreateProject visible={isCreate} setVisible={setIsCreate} fetchData={fetchData} />
+      <ToastContainer />
     </div>
   )
 }

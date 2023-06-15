@@ -24,6 +24,7 @@ import { cilColorBorder, cilPlus, cilDelete, cilChevronLeft, cilChevronRight } f
 import CreateEmployee from 'src/components/employee/CreateEmployee'
 import api from 'src/api/apiClient'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 const Employee = () => {
   const [isDelete, setIsDelete] = useState(false)
@@ -35,7 +36,6 @@ const Employee = () => {
 
   async function fetchData() {
     const response = await api.get(`/api/employee?page=${page}`)
-    // console.log(response)
     setListEmployee(response.content)
   }
 
@@ -58,8 +58,17 @@ const Employee = () => {
     setPage(page - 1)
   }
 
-  const handleDeleteEmployee = async (id) => {
-    const res = await api.delete(`/api/employee/${id}`)
+  const handleDelete = async (id) => {
+    try {
+      await api.delete(`/api/employee/${id}`)
+      toast.success('Delete Employee Successfully!', {
+        position: 'top-right',
+      })
+
+      fetchData()
+    } catch (error) {
+      return Promise.reject(error)
+    }
   }
 
   return (
@@ -119,7 +128,7 @@ const Employee = () => {
                     >
                       <CIcon icon={cilColorBorder} />
                     </CButton>
-                    <CButton variant="ghost" onClick={() => setIsDelete(!isDelete)}>
+                    <CButton variant="ghost" onClick={() => handleDelete(employee.id)}>
                       <CIcon icon={cilDelete} />
                     </CButton>
                   </CTableDataCell>
@@ -139,19 +148,9 @@ const Employee = () => {
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
       </CPagination>
-      <CModal visible={isDelete} onClose={() => setIsDelete(false)}>
-        <CModalHeader onClose={() => setIsDelete(false)}>
-          <CModalTitle>Delete Employee</CModalTitle>
-        </CModalHeader>
-        <CModalBody>Do you want to delete this employee?</CModalBody>
-        <CModalFooter>
-          <CButton color="secondary" onClick={() => setIsDelete(false)}>
-            Close
-          </CButton>
-          <CButton color="primary">Delete</CButton>
-        </CModalFooter>
-      </CModal>
+
       <CreateEmployee visible={isCreate} setVisible={setIsCreate} fetchData={fetchData} />
+      <ToastContainer />
     </div>
   )
 }
