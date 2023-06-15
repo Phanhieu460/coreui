@@ -16,19 +16,28 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import Cookies from 'js-cookie'
+import api from 'src/api/apiClient'
 
 const Login = () => {
   const [validated, setValidated] = useState(false)
   const navigate = useNavigate()
-  const handleSubmit = (event) => {
-    console.log(event.target)
+  const [username, setUsername] = useState()
+  const [password, setPassword] = useState()
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
     const form = event.currentTarget
     if (form.checkValidity() === false) {
-      event.preventDefault()
       event.stopPropagation()
     } else {
-      Cookies.set('authToken', 'ddfdfd')
-      navigate('/dashboard')
+      const res = await api.post('/api/auth/login', {
+        username,
+        password,
+      })
+      if (res.accessToken) {
+        Cookies.set('authToken', res.accessToken)
+        navigate('/dashboard')
+      }
     }
     setValidated(true)
   }
@@ -48,10 +57,11 @@ const Login = () => {
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
-                        value="admin"
+                        value={username}
                         required
                         placeholder="Username"
                         autoComplete="username"
+                        onChange={(e) => setUsername(e.target.value)}
                       />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
@@ -63,7 +73,8 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
-                        value="admin"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>

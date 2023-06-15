@@ -31,6 +31,7 @@ class App extends Component {
             <Route element={<PrivateRoute />}>
               <Route path="*" name="Home" element={<DefaultLayout />} />
             </Route>
+            {/* <Route path="*" name="Home" element={<DefaultLayout />} /> */}
           </Routes>
         </Suspense>
       </HashRouter>

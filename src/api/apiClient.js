@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const api = axios.create()
 let isRefresh = false
 
-api.defaults.baseURL = process.env.REACT_APP_SERVER_URL
+api.defaults.baseURL = 'http://localhost:8080'
 
 api.interceptors.request.use(
   (config) => {

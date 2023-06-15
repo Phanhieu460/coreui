@@ -13,15 +13,36 @@ import {
 } from '@coreui/react'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import api from '../../api/apiClient'
 
 const CreateEmployee = (props) => {
-  const { visible, setVisible } = props
+  const { visible, setVisible, fetchData } = props
   const [validated, setValidated] = useState(false)
+  const [codeEmployee, setCodeEmployee] = useState()
+  const [name, setName] = useState()
+  const [age, setAge] = useState()
+
   const handleCreateEmployee = (event) => {
+    event.preventDefault()
     const form = event.currentTarget
     if (form.checkValidity() === false) {
-      event.preventDefault()
       event.stopPropagation()
+    } else {
+      async function createEmployee() {
+        const response = await api.post('/api/employee', {
+          ma: codeEmployee,
+          ten: name,
+          tuoi: age,
+        })
+        if (response.id) {
+          setVisible(false)
+        }
+        setCodeEmployee('')
+        setAge('')
+        setName('')
+      }
+      createEmployee()
+      fetchData()
     }
     setValidated(true)
   }
@@ -34,50 +55,56 @@ const CreateEmployee = (props) => {
         <CModalBody>
           <CForm validated={validated} onSubmit={handleCreateEmployee}>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputName" className="col-sm-2 col-form-label">
-                Name
+              <CFormLabel htmlFor="inputName" className="col-sm-4 col-form-label">
+                Mã Nhân Viên
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
-              <CCol sm={10}>
+              <CCol sm={8}>
                 <CFormInput
                   tooltipFeedback
                   type="text"
                   id="inputName"
                   required
-                  placeholder="Name"
-                  feedbackInvalid="Please enter name in the input"
+                  placeholder="Mã Nhân Viên"
+                  feedbackInvalid="Please enter code in the input"
+                  value={codeEmployee}
+                  onChange={(e) => setCodeEmployee(e.target.value)}
                 />
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputAddress" className="col-sm-2 col-form-label">
-                Address
+              <CFormLabel htmlFor="inputAddress" className="col-sm-4 col-form-label">
+                Tên Nhân Viên
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
-              <CCol sm={10}>
+              <CCol sm={8}>
                 <CFormInput
                   tooltipFeedback
                   type="text"
                   id="inputAddress"
                   required
-                  placeholder="Address"
-                  feedbackInvalid="Please enter address in the input"
+                  placeholder="Tên Nhân Viên"
+                  feedbackInvalid="Please enter name in the input"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputPhone" className="col-sm-2 col-form-label">
-                Phone
+              <CFormLabel htmlFor="inputPhone" className="col-sm-4 col-form-label">
+                Tuổi
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
-              <CCol sm={10}>
+              <CCol sm={8}>
                 <CFormInput
                   tooltipFeedback
-                  type="text"
-                  id="inputPhone"
+                  type="number"
+                  id="inputAge"
                   required
-                  placeholder="Phone"
-                  feedbackInvalid="Please enter phone in the input"
+                  placeholder="Tuổi"
+                  feedbackInvalid="Please enter age in the input"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
                 />
               </CCol>
             </CRow>

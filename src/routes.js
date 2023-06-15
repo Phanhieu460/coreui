@@ -5,6 +5,8 @@ const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 const Project = React.lazy(() => import('./views/pages/project/Project'))
 const Employee = React.lazy(() => import('./views/pages/employee/Employee'))
+const EditEmployee = React.lazy(() => import('./components/employee/EditEmployee'))
+const EditProject = React.lazy(() => import('./components/project/EditProject'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -55,7 +57,9 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/project', name: 'Project', element: Project },
+  { path: '/project/:id', name: 'Edit Project', element: EditProject },
   { path: '/employee', name: 'Employee', element: Employee },
+  { path: '/employee/:id', name: 'Edit Employee', element: EditEmployee },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },

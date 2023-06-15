@@ -18,30 +18,48 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { cilColorBorder, cilPlus, cilDelete, cilChevronLeft, cilChevronRight } from '@coreui/icons'
 import CreateProject from 'src/components/project/CreateProject'
 import EditProject from 'src/components/project/EditProject'
+import api from 'src/api/apiClient'
+import { useNavigate } from 'react-router-dom'
 
 const Project = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isCreate, setIsCreate] = useState(false)
-  const [isEdit, setIsEdit] = useState(false)
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(0)
+  const [listProject, setListProject] = useState([])
+  const [search, setSearch] = useState('')
+  const navigate = useNavigate()
 
   const handleClickPrevious = () => {
-    if (page <= 1) {
+    if (page <= 0) {
       return
     }
     setPage(page - 1)
   }
+  async function fetchData() {
+    const response = await api.get(`/api/project?page=${page}`)
+    setListProject(response.content)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [page])
 
   return (
     <div className="employee">
       {/* <CFormInput type="text" id="search" placeholder="Search by ..." /> */}
       <CRow className="d-flex justify-content-between p-2">
         <CCol span={6}>
-          <CFormInput size="sm" type="text" placeholder="Search by..." />
+          <CFormInput
+            size="sm"
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by..."
+          />
         </CCol>
         <CCol span={6} className="d-flex justify-content-end">
           <CButton color="success" onClick={() => setIsCreate(!isCreate)}>
@@ -56,13 +74,16 @@ const Project = () => {
               STT
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Class
+              Mã Dự Án
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Heading
+              Tên Dự Án
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Heading
+              Ngày Bắt Đầu
+            </CTableHeaderCell>
+            <CTableHeaderCell scope="col" className="w-25">
+              Ngày Kết Thúc
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
               Action
@@ -70,27 +91,32 @@ const Project = () => {
           </CTableRow>
         </CTableHead>
         <CTableBody>
-          <CTableRow>
-            <CTableHeaderCell scope="row">1</CTableHeaderCell>
-            <CTableDataCell>Mark</CTableDataCell>
-            <CTableDataCell>Otto</CTableDataCell>
-            <CTableDataCell>@mdo</CTableDataCell>
-            <CTableDataCell>
-              <CButton variant="ghost" onClick={() => setIsEdit(!isEdit)}>
-                <CIcon icon={cilColorBorder} />
-              </CButton>
+          {listProject &&
+            listProject.map((project, index) => {
+              return (
+                <CTableRow key={project.id}>
+                  <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                  <CTableDataCell>{project.ma}</CTableDataCell>
+                  <CTableDataCell>{project.ten}</CTableDataCell>
+                  <CTableDataCell>{project.ngayBatDau}</CTableDataCell>
+                  <CTableDataCell>{project.ngayKeThuc}</CTableDataCell>
+                  <CTableDataCell>
+                    <CButton
+                      variant="ghost"
+                      onClick={() => {
+                        navigate(`/project/${project.id}`)
+                      }}
+                    >
+                      <CIcon icon={cilColorBorder} />
+                    </CButton>
 
-              <CButton variant="ghost" onClick={() => setIsDelete(!isDelete)}>
-                <CIcon icon={cilDelete} />
-              </CButton>
-            </CTableDataCell>
-          </CTableRow>
-          <CTableRow>
-            <CTableHeaderCell scope="row">2</CTableHeaderCell>
-            <CTableDataCell>Jacob</CTableDataCell>
-            <CTableDataCell>Thornton</CTableDataCell>
-            <CTableDataCell>@fat</CTableDataCell>
-          </CTableRow>
+                    <CButton variant="ghost" onClick={() => setIsDelete(!isDelete)}>
+                      <CIcon icon={cilDelete} />
+                    </CButton>
+                  </CTableDataCell>
+                </CTableRow>
+              )
+            })}
         </CTableBody>
       </CTable>
       <CPagination align="center" aria-label="Page navigation example">
@@ -98,7 +124,7 @@ const Project = () => {
           {' '}
           <span aria-hidden="true">&laquo;</span>
         </CPaginationItem>
-        <CPaginationItem>{page}</CPaginationItem>
+        <CPaginationItem>{page + 1}</CPaginationItem>
         <CPaginationItem onClick={() => setPage(page + 1)}>
           {' '}
           <span aria-hidden="true">&raquo;</span>
@@ -116,8 +142,7 @@ const Project = () => {
           <CButton color="primary">Delete</CButton>
         </CModalFooter>
       </CModal>
-      <CreateProject visible={isCreate} setVisible={setIsCreate} />
-      <EditProject visible={isEdit} setVisible={setIsEdit} />
+      <CreateProject visible={isCreate} setVisible={setIsCreate} fetchData={fetchData} />
     </div>
   )
 }

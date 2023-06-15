@@ -11,11 +11,46 @@ import {
   CModalTitle,
   CRow,
 } from '@coreui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import api from 'src/api/apiClient'
+import { useNavigate } from 'react-router-dom'
 
 const CreateProject = (props) => {
-  const { visible, setVisible } = props
+  const { visible, setVisible, fetchData } = props
+  const [codeProject, setCodeProject] = useState()
+  const [name, setName] = useState()
+  const [startDate, setStartDate] = useState()
+  const [endDate, setEndDate] = useState()
+  const [validated, setValidated] = useState(false)
+  const navigate = useNavigate()
+
+  const handleCreateProject = (event) => {
+    event.preventDefault()
+    const form = event.currentTarget
+    if (form.checkValidity() === false) {
+      event.stopPropagation()
+    } else {
+      async function createEmployee() {
+        const response = await api.post('/api/employee', {
+          ma: codeProject,
+          ten: name,
+          ngayBatDau: startDate,
+          ngayKeThuc: endDate,
+        })
+        if (response.id) {
+          setVisible(false)
+        }
+        setCodeProject('')
+        setStartDate('')
+        setEndDate('')
+        setName('')
+      }
+      createEmployee()
+      fetchData()
+    }
+    setValidated(true)
+  }
   return (
     <div>
       <CModal visible={visible} onClose={() => setVisible(false)}>
@@ -23,62 +58,78 @@ const CreateProject = (props) => {
           <CModalTitle>Create Project</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <CForm>
+          <CForm validated={validated} onSubmit={handleCreateProject}>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputName" className="col-sm-2 col-form-label">
-                Name
+              <CFormLabel htmlFor="inputCode" className="col-sm-4 col-form-label">
+                Mã Dự Án
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
-              <CCol sm={10}>
+              <CCol sm={8}>
                 <CFormInput
-                  tooltipFeedback
+                  type="text"
+                  id="inputCode"
+                  required
+                  placeholder="Mã Dự Án"
+                  value={codeProject}
+                  onChange={(e) => setCodeProject(e.target.value)}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputName" className="col-sm-4 col-form-label">
+                Tên Dự Án
+                <span style={{ color: 'red' }}>*</span>
+              </CFormLabel>
+              <CCol sm={8}>
+                <CFormInput
                   type="text"
                   id="inputName"
                   required
-                  placeholder="Name"
-                  feedbackInvalid="Please enter name in the input"
+                  placeholder="Tên Dự Án"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputAddress" className="col-sm-2 col-form-label">
-                Address
+              <CFormLabel htmlFor="inputStartDate" className="col-sm-4 col-form-label">
+                Ngày Bắt Đầu
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
-              <CCol sm={10}>
+              <CCol sm={8}>
                 <CFormInput
-                  tooltipFeedback
-                  type="text"
-                  id="inputAddress"
+                  type="date"
+                  id="inputStartDate"
                   required
-                  placeholder="Address"
-                  feedbackInvalid="Please enter address in the input"
+                  placeholder="Ngày Bắt Đầu"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
                 />
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputPhone" className="col-sm-2 col-form-label">
-                Phone
+              <CFormLabel htmlFor="inputEndDate" className="col-sm-4 col-form-label">
+                Ngày Kết Thúc
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
-              <CCol sm={10}>
+              <CCol sm={8}>
                 <CFormInput
-                  tooltipFeedback
-                  type="text"
-                  id="inputPhone"
+                  type="date"
+                  id="inputEndDate"
                   required
-                  placeholder="Phone"
-                  feedbackInvalid="Please enter phone in the input"
+                  placeholder="Ngày Kết Thúc"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
                 />
               </CCol>
             </CRow>
             <CRow className="mt-2">
               <CCol className="d-flex justify-content-end">
-                <CButton color="secondary" onClick={() => setVisible(false)}>
+                <CButton color="secondary" onClick={() => navigate('/project')}>
                   Close
                 </CButton>
                 <CButton color="primary" className="ms-1" type="submit">
-                  Create
+                  Update
                 </CButton>
               </CCol>
             </CRow>
