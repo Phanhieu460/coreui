@@ -31,8 +31,8 @@ const CreateProject = (props) => {
     if (form.checkValidity() === false) {
       event.stopPropagation()
     } else {
-      async function createEmployee() {
-        const response = await api.post('/api/employee', {
+      async function createProject() {
+        const response = await api.post('/api/project', {
           ma: codeProject,
           ten: name,
           ngayBatDau: startDate,
@@ -46,7 +46,7 @@ const CreateProject = (props) => {
         setEndDate('')
         setName('')
       }
-      createEmployee()
+      createProject()
       fetchData()
     }
     setValidated(true)

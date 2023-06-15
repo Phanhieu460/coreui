@@ -39,6 +39,7 @@ const Project = () => {
     }
     setPage(page - 1)
   }
+
   async function fetchData() {
     const response = await api.get(`/api/project?page=${page}`)
     setListProject(response.content)
@@ -47,6 +48,14 @@ const Project = () => {
   useEffect(() => {
     fetchData()
   }, [page])
+
+  useEffect(() => {
+    async function searchData() {
+      const res = await api.get(`/api/project?search=${search}`)
+      setListProject(res.content)
+    }
+    searchData()
+  }, [search])
 
   return (
     <div className="employee">

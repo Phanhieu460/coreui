@@ -14,6 +14,7 @@ import {
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import api from 'src/api/apiClient'
+import moment from 'moment/moment'
 
 const EditProject = () => {
   const [codeProject, setCodeProject] = useState()
@@ -29,8 +30,8 @@ const EditProject = () => {
       if (res) {
         setCodeProject(res.ma)
         setName(res.ten)
-        setStartDate(res.ngayBatDau)
-        setEndDate(res.ngayKeThuc)
+        setStartDate(moment(res.ngayBatDau).format('MM/DD/YYYY'))
+        setEndDate(moment(res.ngayKeThuc).format('MM/DD/YYYY'))
       }
     }
     fetchById()
@@ -48,6 +49,7 @@ const EditProject = () => {
       navigate('/project')
     }
   }
+
   return (
     <div>
       <CForm onSubmit={handleSubmit}>
