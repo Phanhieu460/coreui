@@ -21,10 +21,10 @@ import {
 import React, { useEffect, useState } from 'react'
 import { cilColorBorder, cilPlus, cilDelete, cilChevronLeft, cilChevronRight } from '@coreui/icons'
 import CreateProject from 'src/components/project/CreateProject'
-import EditProject from 'src/components/project/EditProject'
 import api from 'src/api/apiClient'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
+import Navigation from 'src/components/pagination/Navigation'
 
 const Project = () => {
   const [isDelete, setIsDelete] = useState(false)
@@ -105,16 +105,16 @@ const Project = () => {
               STT
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Mã Dự Án
+              Name Project
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Tên Dự Án
+              Start Date
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Ngày Bắt Đầu
+              End Date
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Ngày Kết Thúc
+              Leader
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
               Action
@@ -127,10 +127,10 @@ const Project = () => {
               return (
                 <CTableRow key={project.id}>
                   <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                  <CTableDataCell>{project.ma}</CTableDataCell>
-                  <CTableDataCell>{project.ten}</CTableDataCell>
-                  <CTableDataCell>{project.ngayBatDau}</CTableDataCell>
-                  <CTableDataCell>{project.ngayKeThuc}</CTableDataCell>
+                  <CTableDataCell>{project.name}</CTableDataCell>
+                  <CTableDataCell>{project.startDate}</CTableDataCell>
+                  <CTableDataCell>{project.endDate}</CTableDataCell>
+                  <CTableDataCell>{project.leader}</CTableDataCell>
                   <CTableDataCell>
                     <CButton
                       variant="ghost"
@@ -150,7 +150,7 @@ const Project = () => {
             })}
         </CTableBody>
       </CTable>
-      <CPagination align="center" aria-label="Page navigation example">
+      {/* <CPagination align="center" aria-label="Page navigation example">
         <CPaginationItem id="previous-project" onClick={handleClickPrevious}>
           {' '}
           <span aria-hidden="true">&laquo;</span>
@@ -160,7 +160,8 @@ const Project = () => {
           {' '}
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
-      </CPagination>
+      </CPagination> */}
+      <Navigation total={listProject.length} setPage={setPage} page={page} />
       {/* <CModal visible={isDelete} onClose={() => setIsDelete(false)}>
         <CModalHeader onClose={() => setIsDelete(false)}>
           <CModalTitle>Delete Project</CModalTitle>

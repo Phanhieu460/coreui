@@ -25,6 +25,7 @@ import CreateEmployee from 'src/components/employee/CreateEmployee'
 import api from 'src/api/apiClient'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
+import Navigation from 'src/components/pagination/Navigation'
 
 const Employee = () => {
   const [isDelete, setIsDelete] = useState(false)
@@ -102,16 +103,19 @@ const Employee = () => {
         <CTableHead>
           <CTableRow>
             <CTableHeaderCell scope="col" className="w-5">
-              STT
+              #
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Mã Nhân Viên
+              Name
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Tên Nhân Viên
+              Address
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
-              Tuổi
+              Salary
+            </CTableHeaderCell>
+            <CTableHeaderCell scope="col" className="w-25">
+              Project
             </CTableHeaderCell>
             <CTableHeaderCell scope="col" className="w-25">
               Action
@@ -124,9 +128,9 @@ const Employee = () => {
               return (
                 <CTableRow key={employee.id}>
                   <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                  <CTableDataCell>{employee.ma}</CTableDataCell>
-                  <CTableDataCell>{employee.ten}</CTableDataCell>
-                  <CTableDataCell>{employee.tuoi}</CTableDataCell>
+                  <CTableDataCell>{employee.name}</CTableDataCell>
+                  <CTableDataCell>{employee.address}</CTableDataCell>
+                  <CTableDataCell>{employee.salary}</CTableDataCell>
                   <CTableDataCell>
                     <CButton
                       variant="ghost"
@@ -145,7 +149,7 @@ const Employee = () => {
             })}
         </CTableBody>
       </CTable>
-      <CPagination align="center" aria-label="Page navigation example">
+      {/* <CPagination align="center" aria-label="Page navigation example">
         <CPaginationItem onClick={handleClickPrevious}>
           {' '}
           <span aria-hidden="true">&laquo;</span>
@@ -155,7 +159,8 @@ const Employee = () => {
           {' '}
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
-      </CPagination>
+      </CPagination> */}
+      <Navigation total={listEmployee.length} setPage={setPage} page={page} />
 
       <CreateEmployee visible={isCreate} setVisible={setIsCreate} fetchData={fetchData} />
       <ToastContainer />

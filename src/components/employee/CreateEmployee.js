@@ -19,9 +19,10 @@ import { ToastContainer, toast } from 'react-toastify'
 const CreateEmployee = (props) => {
   const { visible, setVisible, fetchData } = props
   const [validated, setValidated] = useState(false)
-  const [codeEmployee, setCodeEmployee] = useState()
+
   const [name, setName] = useState()
-  const [age, setAge] = useState()
+  const [address, setAddress] = useState()
+  const [salary, setSalary] = useState()
 
   const handleCreateEmployee = (event) => {
     event.preventDefault()
@@ -31,18 +32,21 @@ const CreateEmployee = (props) => {
     } else {
       async function createEmployee() {
         const response = await api.post('/api/employee', {
-          ma: codeEmployee,
-          ten: name,
-          tuoi: age,
+          name,
+          address,
+          salary,
         })
         if (response.id) {
+          toast.success('Create Employee Successfully!', {
+            position: 'top-right',
+          })
           setVisible(false)
         }
-        setCodeEmployee('')
-        setAge('')
-        setName('')
       }
       createEmployee()
+      setAddress('')
+      setName('')
+      setSalary('')
       fetchData()
     }
     setValidated(true)
@@ -56,26 +60,8 @@ const CreateEmployee = (props) => {
         <CModalBody>
           <CForm validated={validated} onSubmit={handleCreateEmployee}>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputName" className="col-sm-4 col-form-label">
-                Mã Nhân Viên
-                <span style={{ color: 'red' }}>*</span>
-              </CFormLabel>
-              <CCol sm={8}>
-                <CFormInput
-                  tooltipFeedback
-                  type="text"
-                  id="inputName"
-                  required
-                  placeholder="Mã Nhân Viên"
-                  feedbackInvalid="Please enter code in the input"
-                  value={codeEmployee}
-                  onChange={(e) => setCodeEmployee(e.target.value)}
-                />
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
               <CFormLabel htmlFor="inputAddress" className="col-sm-4 col-form-label">
-                Tên Nhân Viên
+                Name
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
               <CCol sm={8}>
@@ -84,7 +70,7 @@ const CreateEmployee = (props) => {
                   type="text"
                   id="inputAddress"
                   required
-                  placeholder="Tên Nhân Viên"
+                  placeholder="Name"
                   feedbackInvalid="Please enter name in the input"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -92,20 +78,38 @@ const CreateEmployee = (props) => {
               </CCol>
             </CRow>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputPhone" className="col-sm-4 col-form-label">
-                Tuổi
+              <CFormLabel htmlFor="inputAddress" className="col-sm-4 col-form-label">
+                Address
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
               <CCol sm={8}>
                 <CFormInput
                   tooltipFeedback
-                  type="number"
-                  id="inputAge"
+                  type="text"
+                  id="inputAddress"
                   required
-                  placeholder="Tuổi"
-                  feedbackInvalid="Please enter age in the input"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
+                  placeholder="Address"
+                  feedbackInvalid="Please enter address in the input"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </CCol>
+            </CRow>
+            <CRow className="mb-3">
+              <CFormLabel htmlFor="inputSalary" className="col-sm-4 col-form-label">
+                Salary
+                <span style={{ color: 'red' }}>*</span>
+              </CFormLabel>
+              <CCol sm={8}>
+                <CFormInput
+                  tooltipFeedback
+                  type="text"
+                  id="inputSalary"
+                  required
+                  placeholder="Salary"
+                  feedbackInvalid="Please enter salary in the input"
+                  value={salary}
+                  onChange={(e) => setSalary(e.target.value)}
                 />
               </CCol>
             </CRow>
@@ -123,6 +127,7 @@ const CreateEmployee = (props) => {
         </CModalBody>
         <CModalFooter></CModalFooter>
       </CModal>
+      <ToastContainer />
     </div>
   )
 }

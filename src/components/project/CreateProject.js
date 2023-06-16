@@ -15,10 +15,10 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import api from 'src/api/apiClient'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
 
 const CreateProject = (props) => {
   const { visible, setVisible, fetchData } = props
-  const [codeProject, setCodeProject] = useState()
   const [name, setName] = useState()
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
@@ -33,20 +33,21 @@ const CreateProject = (props) => {
     } else {
       async function createProject() {
         const response = await api.post('/api/project', {
-          ma: codeProject,
-          ten: name,
-          ngayBatDau: startDate,
-          ngayKeThuc: endDate,
+          name,
+          startDate,
+          endDate,
         })
         if (response.id) {
+          toast.success('Create Project Successfully!', {
+            position: 'top-right',
+          })
           setVisible(false)
         }
-        setCodeProject('')
-        setStartDate('')
-        setEndDate('')
-        setName('')
       }
       createProject()
+      setStartDate('')
+      setEndDate('')
+      setName('')
       fetchData()
     }
     setValidated(true)
@@ -60,24 +61,8 @@ const CreateProject = (props) => {
         <CModalBody>
           <CForm validated={validated} onSubmit={handleCreateProject}>
             <CRow className="mb-3">
-              <CFormLabel htmlFor="inputCode" className="col-sm-4 col-form-label">
-                Mã Dự Án
-                <span style={{ color: 'red' }}>*</span>
-              </CFormLabel>
-              <CCol sm={8}>
-                <CFormInput
-                  type="text"
-                  id="inputCode"
-                  required
-                  placeholder="Mã Dự Án"
-                  value={codeProject}
-                  onChange={(e) => setCodeProject(e.target.value)}
-                />
-              </CCol>
-            </CRow>
-            <CRow className="mb-3">
               <CFormLabel htmlFor="inputName" className="col-sm-4 col-form-label">
-                Tên Dự Án
+                Name Project
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
               <CCol sm={8}>
@@ -93,7 +78,7 @@ const CreateProject = (props) => {
             </CRow>
             <CRow className="mb-3">
               <CFormLabel htmlFor="inputStartDate" className="col-sm-4 col-form-label">
-                Ngày Bắt Đầu
+                Start Date
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
               <CCol sm={8}>
@@ -101,7 +86,7 @@ const CreateProject = (props) => {
                   type="date"
                   id="inputStartDate"
                   required
-                  placeholder="Ngày Bắt Đầu"
+                  placeholder="Start Date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
                 />
@@ -109,7 +94,7 @@ const CreateProject = (props) => {
             </CRow>
             <CRow className="mb-3">
               <CFormLabel htmlFor="inputEndDate" className="col-sm-4 col-form-label">
-                Ngày Kết Thúc
+                End Date
                 <span style={{ color: 'red' }}>*</span>
               </CFormLabel>
               <CCol sm={8}>
@@ -117,7 +102,7 @@ const CreateProject = (props) => {
                   type="date"
                   id="inputEndDate"
                   required
-                  placeholder="Ngày Kết Thúc"
+                  placeholder="End Date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                 />
@@ -137,6 +122,7 @@ const CreateProject = (props) => {
         </CModalBody>
         <CModalFooter></CModalFooter>
       </CModal>
+      <ToastContainer />
     </div>
   )
 }

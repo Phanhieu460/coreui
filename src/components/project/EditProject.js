@@ -15,11 +15,12 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import api from 'src/api/apiClient'
 import moment from 'moment/moment'
+import { ToastContainer, toast } from 'react-toastify'
 
 const EditProject = () => {
   const [codeProject, setCodeProject] = useState()
   const [name, setName] = useState()
-  const [startDate, setStartDate] = useState()
+  const [startDate, setStartDate] = useState('2022-12-20')
   const [endDate, setEndDate] = useState()
   const params = useParams()
   const navigate = useNavigate()
@@ -29,10 +30,9 @@ const EditProject = () => {
       try {
         const res = await api.get(`/api/project/${params.id}`)
         if (res) {
-          setCodeProject(res.ma)
-          setName(res.ten)
-          setStartDate(moment(res.ngayBatDau).format('MM/DD/YYYY'))
-          setEndDate(moment(res.ngayKeThuc).format('MM/DD/YYYY'))
+          setName(res.name)
+          setStartDate(res.startDate)
+          setEndDate(res.endDate)
         }
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -45,12 +45,14 @@ const EditProject = () => {
     event.preventDefault()
     try {
       const response = await api.put(`/api/project/${params.id}`, {
-        ma: codeProject,
-        ten: name,
-        ngayBatDau: startDate,
-        ngayKeThuc: endDate,
+        name,
+        startDate,
+        endDate,
       })
       if (response) {
+        toast.success('Edit Project Successfully!', {
+          position: 'top-right',
+        })
         navigate('/project')
       }
     } catch (error) {
@@ -63,24 +65,8 @@ const EditProject = () => {
       <h2 className="text-center">Edit Project</h2>
       <CForm onSubmit={handleSubmit} className="p-2">
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputCode" className="col-sm-3 col-form-label">
-            Mã Dự Án
-            <span style={{ color: 'red' }}>*</span>
-          </CFormLabel>
-          <CCol sm={9}>
-            <CFormInput
-              type="text"
-              id="inputCode"
-              required
-              placeholder="Mã Dự Án"
-              value={codeProject}
-              onChange={(e) => setCodeProject(e.target.value)}
-            />
-          </CCol>
-        </CRow>
-        <CRow className="mb-3">
           <CFormLabel htmlFor="inputName" className="col-sm-3 col-form-label">
-            Tên Dự Án
+            Name Project
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
           <CCol sm={9}>
@@ -88,7 +74,7 @@ const EditProject = () => {
               type="text"
               id="inputName"
               required
-              placeholder="Tên Dự Án"
+              placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -96,7 +82,7 @@ const EditProject = () => {
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputStartDate" className="col-sm-3 col-form-label">
-            Ngày Bắt Đầu
+            Start Date
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
           <CCol sm={9}>
@@ -104,7 +90,7 @@ const EditProject = () => {
               type="date"
               id="inputStartDate"
               required
-              placeholder="Ngày Bắt Đầu"
+              placeholder="Start Date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
@@ -112,7 +98,7 @@ const EditProject = () => {
         </CRow>
         <CRow className="mb-3">
           <CFormLabel htmlFor="inputEndDate" className="col-sm-3 col-form-label">
-            Ngày Kết Thúc
+            End Date
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
           <CCol sm={9}>
@@ -120,7 +106,7 @@ const EditProject = () => {
               type="date"
               id="inputEndDate"
               required
-              placeholder="Ngày Kết Thúc"
+              placeholder="End Date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
@@ -137,6 +123,7 @@ const EditProject = () => {
           </CCol>
         </CRow>
       </CForm>
+      <ToastContainer />
     </div>
   )
 }
