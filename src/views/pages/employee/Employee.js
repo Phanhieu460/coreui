@@ -31,6 +31,7 @@ const Employee = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isCreate, setIsCreate] = useState(false)
   const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const [listEmployee, setListEmployee] = useState([])
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
@@ -160,7 +161,12 @@ const Employee = () => {
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
       </CPagination> */}
-      <Navigation total={listEmployee.length} setPage={setPage} page={page} />
+      <Navigation
+        total={listEmployee.length}
+        setPage={setPage}
+        page={page}
+        setPageSize={setPageSize}
+      />
 
       <CreateEmployee visible={isCreate} setVisible={setIsCreate} fetchData={fetchData} />
       <ToastContainer />

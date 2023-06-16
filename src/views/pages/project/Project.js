@@ -30,6 +30,7 @@ const Project = () => {
   const [isDelete, setIsDelete] = useState(false)
   const [isCreate, setIsCreate] = useState(false)
   const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const [listProject, setListProject] = useState([])
   const [search, setSearch] = useState('')
   const navigate = useNavigate()
@@ -161,7 +162,14 @@ const Project = () => {
           <span aria-hidden="true">&raquo;</span>
         </CPaginationItem>
       </CPagination> */}
-      <Navigation total={listProject.length} setPage={setPage} page={page} />
+      <div className="d-flex justify-content-end">
+        <Navigation
+          total={listProject.length}
+          setPage={setPage}
+          page={page}
+          setPageSize={setPageSize}
+        />
+      </div>
       {/* <CModal visible={isDelete} onClose={() => setIsDelete(false)}>
         <CModalHeader onClose={() => setIsDelete(false)}>
           <CModalTitle>Delete Project</CModalTitle>
