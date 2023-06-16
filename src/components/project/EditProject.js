@@ -26,12 +26,16 @@ const EditProject = () => {
 
   useEffect(() => {
     async function fetchById() {
-      const res = await api.get(`/api/project/${params.id}`)
-      if (res) {
-        setCodeProject(res.ma)
-        setName(res.ten)
-        setStartDate(moment(res.ngayBatDau).format('MM/DD/YYYY'))
-        setEndDate(moment(res.ngayKeThuc).format('MM/DD/YYYY'))
+      try {
+        const res = await api.get(`/api/project/${params.id}`)
+        if (res) {
+          setCodeProject(res.ma)
+          setName(res.ten)
+          setStartDate(moment(res.ngayBatDau).format('MM/DD/YYYY'))
+          setEndDate(moment(res.ngayKeThuc).format('MM/DD/YYYY'))
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
       }
     }
     fetchById()
@@ -39,14 +43,18 @@ const EditProject = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const response = await api.put(`/api/project/${params.id}`, {
-      ma: codeProject,
-      ten: name,
-      ngayBatDau: startDate,
-      ngayKeThuc: endDate,
-    })
-    if (response) {
-      navigate('/project')
+    try {
+      const response = await api.put(`/api/project/${params.id}`, {
+        ma: codeProject,
+        ten: name,
+        ngayBatDau: startDate,
+        ngayKeThuc: endDate,
+      })
+      if (response) {
+        navigate('/project')
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
   }
 

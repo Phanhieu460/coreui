@@ -25,24 +25,32 @@ const EditEmployee = (props) => {
 
   useEffect(() => {
     async function fetchById() {
-      const res = await api.get(`/api/employee/${params.id}`)
-      if (res) {
-        setCodeEmployee(res.ma)
-        setName(res.ten)
-        setAge(res.tuoi)
+      try {
+        const res = await api.get(`/api/employee/${params.id}`)
+        if (res) {
+          setCodeEmployee(res.ma)
+          setName(res.ten)
+          setAge(res.tuoi)
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
       }
     }
     fetchById()
   }, [params.id])
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const response = await api.put(`/api/employee/${params.id}`, {
-      ma: codeEmployee,
-      ten: name,
-      tuoi: age,
-    })
-    if (response) {
-      navigate('/employee')
+    try {
+      const response = await api.put(`/api/employee/${params.id}`, {
+        ma: codeEmployee,
+        ten: name,
+        tuoi: age,
+      })
+      if (response) {
+        navigate('/employee')
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error)
     }
   }
   return (

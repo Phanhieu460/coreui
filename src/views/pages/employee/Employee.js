@@ -35,8 +35,12 @@ const Employee = () => {
   const navigate = useNavigate()
 
   async function fetchData() {
-    const response = await api.get(`/api/employee?page=${page}`)
-    setListEmployee(response.content)
+    try {
+      const response = await api.get(`/api/employee?page=${page}`)
+      setListEmployee(response.content)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   useEffect(() => {
@@ -45,8 +49,12 @@ const Employee = () => {
 
   useEffect(() => {
     async function searchData() {
-      const res = await api.get(`/api/employee?search=${search}`)
-      setListEmployee(res.content)
+      try {
+        const res = await api.get(`/api/employee?search=${search}`)
+        setListEmployee(res.content)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
     }
     searchData()
   }, [search])

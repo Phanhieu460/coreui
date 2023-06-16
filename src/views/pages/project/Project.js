@@ -42,8 +42,12 @@ const Project = () => {
   }
 
   async function fetchData() {
-    const response = await api.get(`/api/project?page=${page}`)
-    setListProject(response.content)
+    try {
+      const response = await api.get(`/api/project?page=${page}`)
+      setListProject(response.content)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   useEffect(() => {
@@ -52,8 +56,12 @@ const Project = () => {
 
   useEffect(() => {
     async function searchData() {
-      const res = await api.get(`/api/project?search=${search}`)
-      setListProject(res.content)
+      try {
+        const res = await api.get(`/api/project?search=${search}`)
+        setListProject(res.content)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
     }
     searchData()
   }, [search])

@@ -14,8 +14,12 @@ const Dashboard = () => {
   const [listProject, setListProject] = useState()
 
   async function fetchData() {
-    const response = await api.get(`/api/employee`)
-    setListEmployee(response.content)
+    try {
+      const response = await api.get(`/api/employee`)
+      setListEmployee(response.content)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
   }
 
   useEffect(() => {
@@ -57,7 +61,9 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: '300px', marginTop: '40px' }}
                 data={{
-                  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                  labels: listEmployee.map((item) => {
+                    return item['ten']
+                  }),
                   datasets: [
                     {
                       label: 'My First dataset',
