@@ -10,7 +10,7 @@ import api from 'src/api/apiClient'
 
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
-  const [listEmployee, setListEmployee] = useState()
+  const [listEmployee, setListEmployee] = useState([])
   const [listProject, setListProject] = useState()
 
   async function fetchData() {
@@ -61,7 +61,7 @@ const Dashboard = () => {
               <CChartLine
                 style={{ height: '300px', marginTop: '40px' }}
                 data={{
-                  labels: listEmployee.map((item) => {
+                  labels: listEmployee?.map((item) => {
                     return item['ten']
                   }),
                   datasets: [

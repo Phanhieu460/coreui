@@ -54,14 +54,15 @@ const EditEmployee = (props) => {
     }
   }
   return (
-    <div>
-      <CForm onSubmit={handleSubmit}>
+    <div className="employee">
+      <h2 className="text-center">Edit Employee</h2>
+      <CForm onSubmit={handleSubmit} className="p-2">
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputCode" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputCode" className="col-sm-3 col-form-label">
             Mã Nhân Viên
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="text"
               id="inputCode"
@@ -73,11 +74,11 @@ const EditEmployee = (props) => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputName" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputName" className="col-sm-3 col-form-label">
             Tên Nhân Viên
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="text"
               id="inputName"
@@ -89,11 +90,11 @@ const EditEmployee = (props) => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputAge" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputAge" className="col-sm-3 col-form-label">
             Tuổi
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="text"
               id="inputAge"

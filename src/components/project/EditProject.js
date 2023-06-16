@@ -59,14 +59,15 @@ const EditProject = () => {
   }
 
   return (
-    <div>
-      <CForm onSubmit={handleSubmit}>
+    <div className="employee">
+      <h2 className="text-center">Edit Project</h2>
+      <CForm onSubmit={handleSubmit} className="p-2">
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputCode" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputCode" className="col-sm-3 col-form-label">
             Mã Dự Án
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="text"
               id="inputCode"
@@ -78,11 +79,11 @@ const EditProject = () => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputName" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputName" className="col-sm-3 col-form-label">
             Tên Dự Án
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="text"
               id="inputName"
@@ -94,11 +95,11 @@ const EditProject = () => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputStartDate" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputStartDate" className="col-sm-3 col-form-label">
             Ngày Bắt Đầu
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="date"
               id="inputStartDate"
@@ -110,11 +111,11 @@ const EditProject = () => {
           </CCol>
         </CRow>
         <CRow className="mb-3">
-          <CFormLabel htmlFor="inputEndDate" className="col-sm-4 col-form-label">
+          <CFormLabel htmlFor="inputEndDate" className="col-sm-3 col-form-label">
             Ngày Kết Thúc
             <span style={{ color: 'red' }}>*</span>
           </CFormLabel>
-          <CCol sm={8}>
+          <CCol sm={9}>
             <CFormInput
               type="date"
               id="inputEndDate"
